@@ -100,7 +100,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: ': /add-blog',
+        path: 'add-blog',
         element: (
           <PrivateRoute>
            <AddBlog></AddBlog>

@@ -1,9 +1,11 @@
 import React from 'react';
+import VolunteerStatistic from './VolunteerStatistic';
+
 
 const VolunteeWelcome = () => {
     return (
         <div>
-            VolunteeWelcome
+          <VolunteerStatistic></VolunteerStatistic>
         </div>
     );
 };
