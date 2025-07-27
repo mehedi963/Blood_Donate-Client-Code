@@ -78,6 +78,25 @@ const Navbar = () => {
                     >
                       Home
                     </Link>
+                    <Link
+                      to='/donation-requests'
+                      className='block md:hidden px-4 py-3 hover:bg-neutral-100 transition font-semibold'
+                    >
+                      Donation Request
+                    </Link>
+                    <Link
+                      to='/blogs'
+                      className='block md:hidden px-4 py-3 hover:bg-neutral-100 transition font-semibold'
+                    >
+                      Blogs
+                    </Link>
+                    <Link
+                      to='/funding'
+                      className='block md:hidden px-4 py-3 hover:bg-neutral-100 transition font-semibold'
+                    >
+                      Funding
+                    </Link>
+                   
 
                     {user ? (
                       <>
