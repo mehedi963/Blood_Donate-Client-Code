@@ -37,20 +37,28 @@ const BloodDonationRequest = () => {
     }
   };
 
-  const handleStatusChange = async (id, newStatus) => {
+
+ const handleStatusChange = async (id, newStatus) => {
     try {
-      await axiosSecure.put(`/donation-requests/${id}`, {
+      const res = await axiosSecure.put(`/donation-requests/${id}/status`, {
         status: newStatus,
       });
-      setRequests((prev) =>
-        prev.map((req) =>
-          req._id === id ? { ...req, status: newStatus } : req
-        )
-      );
+
+      if (res.data.message === 'Status updated') {
+        setRequests((prev) =>
+          prev.map((req) =>
+            req._id === id ? { ...req, status: newStatus } : req
+          )
+        );
+      }
     } catch (err) {
-      console.error('Failed to update status', err);
+      const message =
+        err?.response?.data?.message || err.message || 'Failed to update status';
+      console.error(message);
     }
   };
+
+  
 
  return (
     <>

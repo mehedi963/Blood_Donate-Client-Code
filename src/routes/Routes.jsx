@@ -6,11 +6,9 @@ import SignUp from '../pages/SignUp/SignUp'
 import PlantDetails from '../pages/PlantDetails/PlantDetails'
 import PrivateRoute from './PrivateRoute'
 import DashboardLayout from '../layouts/DashboardLayout'
-import AddPlant from '../pages/Dashboard/Seller/AddPlant'
 import Profile from '../pages/Dashboard/Common/Profile'
 import Statistics from '../pages/Dashboard/Common/Statistics'
 import MainLayout from '../layouts/MainLayout'
-import MyInventory from '../pages/Dashboard/Seller/MyInventory'
 import MyDonationRequests from '../pages/Dashboard/Donor/MyDonationRequests'
 import CreateDonationRequest from '../pages/Dashboard/Donor/CreateDonationRequest'
 import AllUsers from '../pages/Dashboard/Admin/AllUsers'
@@ -22,6 +20,7 @@ import Blogs from '../components/Home/Blogs'
 import Funding from '../components/Home/Funding'
 import EditDonor from '../pages/Dashboard/Donor/EditDonor'
 import ViewDonor from '../pages/Dashboard/Donor/ViewDonor'
+import AddBlog from '../pages/Dashboard/Admin/AddBlog'
 
 
 
@@ -100,14 +99,14 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-      // {
-      //   path: 'add-blog',
-      //   element: (
-      //     <PrivateRoute>
-      //      <AddBlog></AddBlog>
-      //     </PrivateRoute>
-      //   ),
-      // },
+      {
+        path: ': /add-blog',
+        element: (
+          <PrivateRoute>
+           <AddBlog></AddBlog>
+          </PrivateRoute>
+        ),
+      },
       {
         path: 'profile',
         element: (

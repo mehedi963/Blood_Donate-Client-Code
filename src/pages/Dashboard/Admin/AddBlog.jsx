@@ -1,3 +1,22 @@
+import React from 'react';
+
+const AddBlog = () => {
+    return (
+        <div>
+            <h1>AddBlog</h1>
+        </div>
+    );
+};
+
+export default AddBlog;
+
+
+
+
+
+
+
+
 // import { useForm } from 'react-hook-form';
 // import { useState, useRef } from 'react';
 // import { useNavigate } from 'react-router-dom';
