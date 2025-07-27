@@ -71,14 +71,7 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-      {
-        path: 'my-inventory',
-        element: (
-          <PrivateRoute>
-            <MyInventory />
-          </PrivateRoute>
-        ),
-      },
+      
       {
         path: 'all-users',
         element: (<PrivateRoute><AllUsers></AllUsers></PrivateRoute>),
