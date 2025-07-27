@@ -3,10 +3,54 @@ import { FcGoogle } from 'react-icons/fc'
 import useAuth from '../../hooks/useAuth'
 import { toast } from 'react-hot-toast'
 import { TbFidgetSpinner } from 'react-icons/tb'
+import { useEffect, useState } from 'react'
+import { imageUpload, saveUserDB, } from '../../api/utilities'
 
 const SignUp = () => {
   const { createUser, updateUserProfile, signInWithGoogle, loading } = useAuth()
   const navigate = useNavigate()
+  const [uploadImage, setUploadImage] = useState(null);
+  const [districts, setDistricts] = useState([])
+  const [upazilasData, setUpazilasData] = useState([])
+  const [selectedDistrict, setSelectedDistrict] = useState('')
+  const [selectedUpazila, setSelectedUpazila] = useState('')
+  
+
+  // Load districts & upazilas from public folder
+  useEffect(() => {
+    fetch('/districts.json')
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        const distData = data.find(item => item.name === 'districts' && item.type === 'table')?.data || []
+        console.log(distData);
+        setDistricts(distData)
+      })
+
+    fetch('/upazilas.json')
+      .then(res => res.json())
+      .then(data => {
+        const upazilaTable = data.find(item => item.name === 'upazilas' && item.type === 'table')
+        const upazilaData = upazilaTable?.data || []
+        console.log(upazilaData);
+        setUpazilasData(upazilaData)
+      })
+  }, [])
+
+
+  const handleImageUpload = async e => {
+    e.preventDefault()
+    const image = e.target.files[0]
+    try {
+      const imageURL = await imageUpload(image);
+      setUploadImage(imageURL)
+    } catch (err) {
+      console.log(err);
+      setUploadImage("Image Upload Fail")
+    }
+
+  }
+
   // form submit handler
   const handleSubmit = async event => {
     event.preventDefault()
@@ -14,6 +58,28 @@ const SignUp = () => {
     const name = form.name.value
     const email = form.email.value
     const password = form.password.value
+    const confirmPassword = form.confirmPassword.value
+    const bloodGroup = form.bloodGroup.value
+    const district = form.district.value
+    const upazila = form.upazila.value
+    const image = form?.image?.files[0]
+    console.log(bloodGroup, district, upazila,image);
+
+    if (password !== confirmPassword) {
+      return toast.error("Passwords do not match")
+    }
+
+    if (!uploadImage) {
+      return toast.error("Please upload an image first")
+    }
+
+    try {
+      const imageURL = await imageUpload(image);
+      setUploadImage(imageURL)
+    } catch (err) {
+      console.log(err);
+      setUploadImage("Image Upload Fail")
+    }
 
     try {
       //2. User Registration
@@ -22,10 +88,24 @@ const SignUp = () => {
       //3. Save username & profile photo
       await updateUserProfile(
         name,
-        'https://lh3.googleusercontent.com/a/ACg8ocKUMU3XIX-JSUB80Gj_bYIWfYudpibgdwZE1xqmAGxHASgdvCZZ=s96-c'
+       uploadImage,
       )
       console.log(result)
 
+      const userData = {
+        name,
+        email,
+        password,
+        confirmPassword,
+        image : uploadImage,
+        bloodGroup,
+        district,
+        upazila,
+        role: 'donor',
+        status: 'active',
+      }
+      console.log(userData);
+      await saveUserDB(userData)
       navigate('/')
       toast.success('Signup Successful')
     } catch (err) {
@@ -61,6 +141,7 @@ const SignUp = () => {
           className='space-y-6 ng-untouched ng-pristine ng-valid'
         >
           <div className='space-y-4'>
+            {/* Name field */}
             <div>
               <label htmlFor='email' className='block mb-2 text-sm'>
                 Name
@@ -74,18 +155,7 @@ const SignUp = () => {
                 data-temp-mail-org='0'
               />
             </div>
-            <div>
-              <label htmlFor='image' className='block mb-2 text-sm'>
-                Select Image:
-              </label>
-              <input
-                className='bg-gray-200 cursor-pointer'
-                type='file'
-                id='image'
-                name='image'
-                accept='image/*'
-              />
-            </div>
+            {/* Email field */}
             <div>
               <label htmlFor='email' className='block mb-2 text-sm'>
                 Email address
@@ -100,6 +170,7 @@ const SignUp = () => {
                 data-temp-mail-org='0'
               />
             </div>
+            {/* Password field */}
             <div>
               <div className='flex justify-between'>
                 <label htmlFor='password' className='text-sm mb-2'>
@@ -116,6 +187,56 @@ const SignUp = () => {
                 className='w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-lime-500 bg-gray-200 text-gray-900'
               />
             </div>
+            {/* Confirm Password */}
+            <div>
+              <label className='block mb-2 text-sm'>Confirm Password</label>
+              <input
+                type='password'
+                name='confirmPassword'
+                placeholder='Confirm Password'
+                className='w-full px-3 py-2 border rounded-md bg-gray-200'
+                required
+              />
+            </div>
+          </div>
+          {/* Image Upload */}
+          <div>
+            <label htmlFor='image' className='block mb-2 text-md'>Upload Avatar</label>
+            <input className='bg-gray-200 cursor-pointer' type='file' name='image' accept='image/*' onChange={handleImageUpload} />
+            {uploadImage && <img src={uploadImage} alt='avatar' className='w-12 h-12 mt-2 rounded-full' />}
+          </div>
+
+          {/* Blood Group */}
+          <div>
+            <label className='block mb-2 text-sm'>Blood Group</label>
+            <select name='bloodGroup' required className='w-full px-3 py-2 border rounded-md bg-gray-200'>
+              <option value=''>Select Blood Group</option>
+              {['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'].map((bg) => (
+                <option key={bg} value={bg}>{bg}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* District */}
+          <div>
+            <label className='block mb-2 text-sm'>District</label>
+            <select name='district' value={selectedDistrict} onChange={(e) => setSelectedDistrict(e.target.value)} required className='w-full px-3 py-2 border rounded-md bg-gray-200'>
+              <option value=''>Select District</option>
+              {districts.map((d) => (
+                <option key={d.id} value={d.name}>{d.name}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Upazila */}
+          <div>
+            <label className='block mb-2 text-sm'>Upazila</label>
+            <select name='upazila' value={selectedUpazila} onChange={(e) => setSelectedUpazila(e.target.value)} required className='w-full px-3 py-2 border rounded-md bg-gray-200'>
+              <option value=''>Select Upazila</option>
+              {upazilasData.map((u) => (
+                <option key={u.id} value={u.name}>{u.name}</option>
+              ))}
+            </select>
           </div>
 
           <div>

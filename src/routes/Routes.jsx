@@ -7,13 +7,23 @@ import PlantDetails from '../pages/PlantDetails/PlantDetails'
 import PrivateRoute from './PrivateRoute'
 import DashboardLayout from '../layouts/DashboardLayout'
 import AddPlant from '../pages/Dashboard/Seller/AddPlant'
-import ManageUsers from '../pages/Dashboard/Admin/ManageUsers'
 import Profile from '../pages/Dashboard/Common/Profile'
 import Statistics from '../pages/Dashboard/Common/Statistics'
 import MainLayout from '../layouts/MainLayout'
 import MyInventory from '../pages/Dashboard/Seller/MyInventory'
-import ManageOrders from '../pages/Dashboard/Seller/ManageOrders'
-import MyOrders from '../pages/Dashboard/Customer/MyOrders'
+import MyDonationRequests from '../pages/Dashboard/Donor/MyDonationRequests'
+import CreateDonationRequest from '../pages/Dashboard/Donor/CreateDonationRequest'
+import AllUsers from '../pages/Dashboard/Admin/AllUsers'
+import BloodDonationRequest from '../pages/Dashboard/Admin/BloodDonationRequest'
+import ContentManagement from '../pages/Dashboard/Admin/ContentManagement '
+import StatisticRoute from '../pages/Dashboard/Common/StatisticRoute'
+import Donation from '../components/Home/Donation'
+import Blogs from '../components/Home/Blogs'
+import Funding from '../components/Home/Funding'
+import EditDonor from '../pages/Dashboard/Donor/EditDonor'
+import ViewDonor from '../pages/Dashboard/Donor/ViewDonor'
+
+
 
 export const router = createBrowserRouter([
   {
@@ -22,8 +32,20 @@ export const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        path: '/',
+        index : true,
         element: <Home />,
+      },
+      {
+        path: '/donations-requests',
+        element: <Donation></Donation>,
+      },
+      {
+        path: '/blogs',
+        element: <Blogs></Blogs>,
+      },
+      {
+        path: '/funding',
+        element: <Funding></Funding>,
       },
       {
         path: '/plant/:id',
@@ -42,18 +64,10 @@ export const router = createBrowserRouter([
     ),
     children: [
       {
-        index: true,
+         index: true,
         element: (
           <PrivateRoute>
-            <Statistics />
-          </PrivateRoute>
-        ),
-      },
-      {
-        path: 'add-plant',
-        element: (
-          <PrivateRoute>
-            <AddPlant />
+           <StatisticRoute></StatisticRoute>
           </PrivateRoute>
         ),
       },
@@ -66,13 +80,41 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'manage-users',
-        element: (
+        path: 'all-users',
+        element: (<PrivateRoute><AllUsers></AllUsers></PrivateRoute>),
+      },
+      {
+        path: 'all-blood-donation-request',
+        element : (
           <PrivateRoute>
-            <ManageUsers />
+            <BloodDonationRequest></BloodDonationRequest>
           </PrivateRoute>
         ),
       },
+      {
+        path: 'statistic',
+        element : (
+          <PrivateRoute>
+            <Statistics></Statistics>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: 'content-management',
+        element: (
+          <PrivateRoute>
+           <ContentManagement></ContentManagement>
+          </PrivateRoute>
+        ),
+      },
+      // {
+      //   path: 'add-blog',
+      //   element: (
+      //     <PrivateRoute>
+      //      <AddBlog></AddBlog>
+      //     </PrivateRoute>
+      //   ),
+      // },
       {
         path: 'profile',
         element: (
@@ -82,17 +124,38 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'my-orders',
+        path: 'my-donation-requests',
         element: (
           <PrivateRoute>
-            <MyOrders />
+           <MyDonationRequests></MyDonationRequests>
           </PrivateRoute>
         ),
       },
       {
-        path: 'manage-orders',
-        element: <ManageOrders />,
+        path: 'create-donation-requests',
+        element: (
+          <PrivateRoute>
+           <CreateDonationRequest></CreateDonationRequest>
+          </PrivateRoute>
+        ),
       },
+      {
+        path: '/dashboard/edit-donation/:id',
+        element: (
+          <PrivateRoute>
+           <EditDonor></EditDonor>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: '/dashboard/view-donation/:id',
+        element: (
+          <PrivateRoute>
+          <ViewDonor></ViewDonor>
+          </PrivateRoute>
+        ),
+      },
+      
     ],
   },
 ])

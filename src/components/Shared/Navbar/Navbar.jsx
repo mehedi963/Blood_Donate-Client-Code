@@ -1,23 +1,52 @@
 import Container from '../Container'
 import { AiOutlineMenu } from 'react-icons/ai'
 import { useState } from 'react'
-import { Link } from 'react-router'
+import { Link, NavLink } from 'react-router'
 import useAuth from '../../../hooks/useAuth'
 import avatarImg from '../../../assets/images/placeholder.jpg'
-import logo from '../../../assets/images/logo-flat.png'
+import logo from '../../../assets/images/donation-32.png'
 const Navbar = () => {
   const { user, logOut } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
 
+   const navLinkStyle = ({ isActive }) =>
+    isActive
+      ? 'text-red-600 font-semibold'
+      : 'text-neutral-700 hover:text-red-500 transition font-medium';
+
   return (
     <div className='fixed w-full bg-white z-10 shadow-sm'>
-      <div className='py-4 border-b-[1px]'>
+      <div className='py-1 border-b-[1px]'>
         <Container>
           <div className='flex flex-row  items-center justify-between gap-3 md:gap-0'>
+            
             {/* Logo */}
             <Link to='/'>
-              <img src={logo} alt='logo' width='100' height='100' />
+             <div className='flex items-center gap-4'>
+               <img src={logo}  alt='logo' width='100' height='100' />
+              <span className='text-2xl font-extrabold'>Blood Donate</span>
+             </div>
             </Link>
+
+             {/* Center Navigation */}
+            <div className='hidden md:flex items-center gap-6'>
+              <NavLink to='/donation-requests' className={navLinkStyle}>
+                Donation Requests
+              </NavLink>
+              <NavLink to='/blogs' className={navLinkStyle}>
+                Blog
+              </NavLink>
+              {user ? (
+                <NavLink to='/funding' className={navLinkStyle}>
+                  Funding
+                </NavLink>
+              ) : (
+                <NavLink to='/login' className={navLinkStyle}>
+                  Login
+                </NavLink>
+              )}
+            </div>
+
             {/* Dropdown Menu */}
             <div className='relative'>
               <div className='flex flex-row items-center gap-3'>

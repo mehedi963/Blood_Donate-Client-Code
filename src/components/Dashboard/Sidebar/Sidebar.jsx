@@ -4,22 +4,25 @@ import { FcSettings } from 'react-icons/fc'
 import { AiOutlineBars } from 'react-icons/ai'
 import { BsGraphUp } from 'react-icons/bs'
 import MenuItem from './Menu/MenuItem'
-
 import useAuth from '../../../hooks/useAuth'
-
 import AdminMenu from './Menu/AdminMenu'
 import { Link } from 'react-router'
 import SellerMenu from './Menu/SellerMenu'
-import CustomerMenu from './Menu/CustomerMenu'
-import logo from '../../../assets/images/logo-flat.png'
+import CustomerMenu from './Menu/DonorMenu'
+import logo from '../../../assets/images/icons8-blood-donation-64.png'
+import useRole from '../../../hooks/userRole'
+import LoadingSpinner from '../../Shared/LoadingSpinner'
 const Sidebar = () => {
   const { logOut } = useAuth()
   const [isActive, setActive] = useState(false)
-
+   const [role,isRoleLoading] = useRole()
+  console.log(role);
   // Sidebar Responsive Handler
   const handleToggle = () => {
     setActive(!isActive)
   }
+
+ if(isRoleLoading) return <LoadingSpinner></LoadingSpinner>
   return (
     <>
       {/* Small Screen Navbar */}
@@ -27,13 +30,10 @@ const Sidebar = () => {
         <div>
           <div className='block cursor-pointer p-4 font-bold'>
             <Link to='/'>
-              <img
-                // className='hidden md:block'
-                src='https://i.ibb.co/4ZXzmq5/logo.png'
-                alt='logo'
-                width='100'
-                height='100'
-              />
+              <div className='flex items-center gap-2'>
+                <img src={logo} alt='logo' width='100' height='100' />
+                <span className='text-xl font-extrabold'>Blood Donate</span>
+              </div>
             </Link>
           </div>
         </div>
@@ -48,9 +48,8 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <div
-        className={`z-10 md:fixed flex flex-col justify-between overflow-x-hidden bg-gray-100 w-64 space-y-6 px-2 py-4 absolute inset-y-0 left-0 transform ${
-          isActive && '-translate-x-full'
-        }  md:translate-x-0  transition duration-200 ease-in-out`}
+        className={`z-10 md:fixed flex flex-col justify-between overflow-x-hidden bg-gray-100 w-64 space-y-6 px-2 py-4 absolute inset-y-0 left-0 transform ${isActive && '-translate-x-full'
+          }  md:translate-x-0  transition duration-200 ease-in-out`}
       >
         <div>
           <div>
@@ -71,15 +70,10 @@ const Sidebar = () => {
           <div className='flex flex-col justify-between flex-1 mt-6'>
             <nav>
               {/*  Menu Items */}
-              <CustomerMenu />
-              <SellerMenu />
-
-              <MenuItem
-                icon={BsGraphUp}
-                label='Statistics'
-                address='/dashboard'
-              />
-              <AdminMenu />
+             {role === 'donor' &&  <CustomerMenu />}
+             {role === 'volunteer' &&  <SellerMenu />}
+             {role === 'admin' &&  <AdminMenu />}
+             
             </nav>
           </div>
         </div>
