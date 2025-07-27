@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { Link, useNavigate } from 'react-router';
+import { Link, NavLink } from 'react-router';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import useAuth from '../../../hooks/useAuth';
 
 const DonorWelcome = () => {
      const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const navigate = useNavigate();
   const [requests, setRequests] = useState([]);
 
   useEffect(() => {
@@ -48,7 +47,7 @@ const DonorWelcome = () => {
         Welcome, {user?.displayName || 'Donor'}!
       </h2>
 
-      {requests.length > 1 && (
+      {requests.length > 0 && (
         <div>
           <h3 className="text-lg font-semibold mb-2">Your Recent Donation Requests</h3>
           <div className="overflow-x-auto">
@@ -89,9 +88,14 @@ const DonorWelcome = () => {
                           <button onClick={() => updateStatus(req._id, 'canceled')} className="btn btn-warning btn-sm">Cancel</button>
                         </>
                       )}
-                      <button onClick={() => navigate(`/dashboard/edit-request/${req._id}`)} className="btn btn-info btn-sm">Edit</button>
+
+                      <NavLink to={`/dashboard/edit-donation/${req._id}`}>
+                        <button className="btn btn-info btn-sm">Edit</button>
+                      </NavLink>
+
                       <button onClick={() => handleDelete(req._id)} className="btn btn-error btn-sm">Delete</button>
-                      <Link to={`/dashboard/request/${req._id}`} className="btn btn-secondary btn-sm">View</Link>
+
+                      <NavLink to={`/dashboard/view-donation/${req._id}`} className="btn btn-secondary btn-sm">View</NavLink>
                     </td>
                   </tr>
                 ))}
