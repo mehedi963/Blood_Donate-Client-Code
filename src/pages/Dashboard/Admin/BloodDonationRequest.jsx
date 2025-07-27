@@ -2,8 +2,11 @@ import React, { useEffect, useState } from 'react';
 import UserDataRow from '../../../components/Dashboard/TableRows/UserDataRow';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import { NavLink } from 'react-router';
+import userRole from '../../../hooks/userRole';
+import LoadingSpinner from '../../../components/Shared/LoadingSpinner';
 
 const BloodDonationRequest = () => {
+  const [role,isRoleLoading] = userRole()
   const axiosSecure = useAxiosSecure();
   const [requests, setRequests] = useState([]);
   const [filter, setFilter] = useState('all');
@@ -37,7 +40,7 @@ const BloodDonationRequest = () => {
     }
   };
 
-
+if(isRoleLoading) return <LoadingSpinner></LoadingSpinner>
  const handleStatusChange = async (id, newStatus) => {
     try {
       const res = await axiosSecure.put(`/donation-requests/${id}/status`, {
@@ -122,6 +125,9 @@ const BloodDonationRequest = () => {
                     )}
                   </td>
                   <td className="border p-2 space-x-2">
+                    {
+                      role === 'admin' 
+                    }
                     {req.status === 'inprogress' && (
                       <>
                         <button
@@ -141,15 +147,22 @@ const BloodDonationRequest = () => {
                     <NavLink to={`/dashboard/edit-donation/${req._id}`}>
                       <button className="text-blue-600">Edit</button>
                     </NavLink>
-                    <button
+
+                    {
+                      role === 'admin' && <button
                       className="text-red-600"
                       onClick={() => handleDelete(req._id)}
                     >
                       Delete
                     </button>
-                    <NavLink to={`/dashboard/view-donation/${req._id}`}>
+                    }
+                    {
+                      role === 'admin' && <NavLink to={`/dashboard/view-donation/${req._id}`}>
                       <button>View</button>
                     </NavLink>
+                    }
+                    
+                    
                   </td>
                 </tr>
               ))}
