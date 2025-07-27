@@ -1,9 +1,12 @@
-import React from 'react';
+
+import Statistics from '../Common/Statistics';
 
 const AdminWelcome = () => {
+    
+
     return (
         <div>
-            AdminWelcome
+            <Statistics></Statistics>
         </div>
     );
 };
