@@ -2,93 +2,75 @@ import Container from '../../components/Shared/Container'
 import Heading from '../../components/Shared/Heading'
 import Button from '../../components/Shared/Button/Button'
 import PurchaseModal from '../../components/Modal/PurchaseModal'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import useAxiosSecure from '../../hooks/useAxiosSecure'
+import { useParams } from 'react-router'
+import toast from 'react-hot-toast'
 
 const DonationDetails = () => {
+  const { id } = useParams()
   let [isOpen, setIsOpen] = useState(false)
-
+  const axiosSecure = useAxiosSecure()
+  const [request, setRequest] = useState([]);
   const closeModal = () => {
     setIsOpen(false)
   }
 
+  
+const fetchRequest = async () => {
+    try {
+      const res = await axiosSecure.get(`/create-donation-request/${id}`);
+      setRequest(res.data);
+    } catch (err) {
+      console.log(err);
+      toast.error('Failed to load donation request');
+    }
+  };
+
+  useEffect(() => {
+    fetchRequest();
+  }, [id]);
+
+
+  console.log(request,id);
+  const { bloodGroup, donationDate, donationTime, fullAddress, hospitalName, recipientDistrict, recipientName, recipientUpazila, status, requestMessage, _id } = request
   return (
     <Container>
-      <div className='mx-auto flex flex-col lg:flex-row justify-between w-full gap-12'>
-        {/* Header */}
-        <div className='flex flex-col gap-6 flex-1'>
-          <div>
-            <div className='w-full overflow-hidden rounded-xl'>
-              <img
-                className='object-cover w-full'
-                src='https://i.ibb.co/DDnw6j9/1738597899-golden-money-plant.jpg'
-                alt='header image'
-              />
-            </div>
-          </div>
-        </div>
+      <div className='mt-12 mx-auto flex flex-col lg:flex-row justify-between w-full gap-12'> 
         <div className='md:gap-10 flex-1'>
-          {/* Plant Info */}
-          <Heading
-            title={'Money Plant'}
-            subtitle={`Category: ${'Succulent'}`}
-          />
-          <hr className='my-6' />
-          <div
-            className='
-          text-lg font-light text-neutral-500'
-          >
-            Professionally deliver sticky testing procedures for next-generation
-            portals. Objectively communicate just in time infrastructures
-            before.
-          </div>
-          <hr className='my-6' />
+           <h2 className="text-2xl font-bold mb-4">Donation Request Details</h2>
+          <div className="bg-white p-4 shadow rounded space-y-2">
+       
+        <p><strong>Recipient:</strong> {recipientName}</p>
+        <p><strong>District:</strong> {recipientDistrict}</p>
+        <p><strong>Upazila:</strong> {recipientUpazila}</p>
+        <p><strong>Hospital:</strong> {hospitalName}</p>
+        <p><strong>Address:</strong> {fullAddress}</p>
+        <p><strong>Blood Group:</strong> {bloodGroup}</p>
+        <p><strong>Date & Time:</strong> {donationDate} at {donationTime}</p>
+        <p><strong>Status:</strong> {status}</p>
+        <p><strong>Message:</strong> {requestMessage}</p>
+      </div>
 
-          <div
-            className='
-                text-xl 
-                font-semibold 
-                flex 
-                flex-row 
-                items-center
-                gap-2
-              '
-          >
-            <div>Seller: Shakil Ahmed Atik</div>
+       <hr className="my-6" />
 
-            <img
-              className='rounded-full'
-              height='30'
-              width='30'
-              alt='Avatar'
-              referrerPolicy='no-referrer'
-              src='https://lh3.googleusercontent.com/a/ACg8ocKUMU3XIX-JSUB80Gj_bYIWfYudpibgdwZE1xqmAGxHASgdvCZZ=s96-c'
-            />
-          </div>
-          <hr className='my-6' />
-          <div>
-            <p
-              className='
-                gap-4 
-                font-light
-                text-neutral-500
-              '
-            >
-              Quantity: 10 Units Left Only!
-            </p>
-          </div>
+          
+
+
           <hr className='my-6' />
           <div className='flex justify-between'>
-            <p className='font-bold text-3xl text-gray-500'>Price: 10$</p>
-            <div>
-              <Button onClick={() => setIsOpen(true)} label='Purchase' />
+              {status === 'pending' && (
+            <div className="flex justify-start">
+              <Button onClick={() => setIsOpen(true)} label="Donate" />
             </div>
+          )}
           </div>
           <hr className='my-6' />
 
-          <PurchaseModal closeModal={closeModal} isOpen={isOpen} />
-        </div>
-      </div>
-    </Container>
+          <PurchaseModal closeModal={closeModal} donationId={_id} isOpen={isOpen} refresh={fetchRequest} />
+         </div>
+       </div>
+     </Container>
   )
 }
 
