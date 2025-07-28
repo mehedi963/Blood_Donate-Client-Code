@@ -44,7 +44,7 @@ console.log(blogs);
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Content Management</h2>
-        <Link to="/dashboard/content-management/add-blog">
+        <Link to="/dashboard/add-blog">
           <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
             + Add Blog
           </button>
