@@ -3,7 +3,7 @@ import Home from '../pages/Home/Home'
 import ErrorPage from '../pages/ErrorPage'
 import Login from '../pages/Login/Login'
 import SignUp from '../pages/SignUp/SignUp'
-import PlantDetails from '../pages/PlantDetails/PlantDetails'
+import PlantDetails from '../pages/DonationDetails/DonationDetails'
 import PrivateRoute from './PrivateRoute'
 import DashboardLayout from '../layouts/DashboardLayout'
 import Profile from '../pages/Dashboard/Common/Profile'
@@ -22,6 +22,7 @@ import EditDonor from '../pages/Dashboard/Donor/EditDonor'
 import ViewDonor from '../pages/Dashboard/Donor/ViewDonor'
 import AddBlog from '../pages/Dashboard/Admin/AddBlog'
 import SearchDonor from '../components/Home/SearchDonar'
+import DonationDetails from '../pages/DonationDetails/DonationDetails'
 
 
 
@@ -36,8 +37,12 @@ export const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: '/donations-requests',
+        path: '/donation',
         element: <Donation></Donation>,
+      },
+      {
+        path: '/donation/:id',
+        element: <DonationDetails></DonationDetails>
       },
       {
         path: '/search-donors',
@@ -51,10 +56,7 @@ export const router = createBrowserRouter([
         path: '/funding',
         element: <Funding></Funding>,
       },
-      {
-        path: '/plant/:id',
-        element: <PlantDetails />,
-      },
+      
     ],
   },
   { path: '/login', element: <Login /> },

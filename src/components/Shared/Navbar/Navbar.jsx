@@ -30,7 +30,7 @@ const Navbar = () => {
 
              {/* Center Navigation */}
             <div className='hidden md:flex items-center gap-6'>
-              <NavLink to='/donation-requests' className={navLinkStyle}>
+              <NavLink to='/donation' className={navLinkStyle}>
                 Donation Requests
               </NavLink>
               <NavLink to='/blogs' className={navLinkStyle}>
@@ -79,7 +79,7 @@ const Navbar = () => {
                       Home
                     </Link>
                     <Link
-                      to='/donation-requests'
+                      to='/donation'
                       className='block md:hidden px-4 py-3 hover:bg-neutral-100 transition font-semibold'
                     >
                       Donation Request
