@@ -19,7 +19,7 @@ const Banner = () => {
           Join as a Donor
         </button>
         <button
-          onClick={() => navigate('/funding')}
+          onClick={() => navigate('/search-donors')}
           className="bg-white border-2 border-red-600 hover:bg-red-100 text-red-600 font-semibold py-3 px-6 rounded-lg transition"
         >
           Search Donors

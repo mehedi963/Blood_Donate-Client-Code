@@ -21,6 +21,7 @@ import Funding from '../components/Home/Funding'
 import EditDonor from '../pages/Dashboard/Donor/EditDonor'
 import ViewDonor from '../pages/Dashboard/Donor/ViewDonor'
 import AddBlog from '../pages/Dashboard/Admin/AddBlog'
+import SearchDonor from '../components/Home/SearchDonar'
 
 
 
@@ -37,6 +38,10 @@ export const router = createBrowserRouter([
       {
         path: '/donations-requests',
         element: <Donation></Donation>,
+      },
+      {
+        path: '/search-donors',
+        element: <SearchDonor></SearchDonor>,
       },
       {
         path: '/blogs',
