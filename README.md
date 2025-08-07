@@ -1,12 +1,54 @@
-# React + Vite
+# 🩸 Blood-Donate Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-featured MERN stack web app that connects blood donors with those in need. It supports user registration, searching by blood group & location, real-time donation requests, user roles (donor, volunteer, admin), funding, and blog content management.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🔗 Live Demo
 
-## Expanding the ESLint configuration
+[Click here to view the live project](https://cheery-toffee-edc4d2.netlify.app/) <!-- Add your live link here -->
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🚀 Tech Stack
+
+- **Frontend:** React.js, Tailwind CSS, Axios, React Router, React Hook Form
+- **Backend:** Node.js, Express.js, MongoDB, Mongoose
+- **Authentication:** JWT (JSON Web Tokens)
+- **Others:** Stripe (Payment), Jodit Editor (Blog Editor), Vercel (Hosting)
+
+---
+
+## 🧩 Core Features
+
+- 🔐 User authentication with role-based access (Donor, Volunteer, Admin)
+- 📍 Search donors by blood group, district, and upazila
+- 📢 Create, edit, and manage donation requests
+- 📝 Admin blog CMS with rich text editing and image upload
+- 💰 Stripe-based donation funding system
+- 🧑 Dashboard for each role (donor, volunteer, admin)
+- 📊 Charts for donation and funding overview (Admin)
+- ✅ Status filtering, pagination, and toast notifications
+
+---
+
+## 📦 Dependencies
+
+```json
+Frontend:
+- react
+- react-router-dom
+- axios
+- react-hook-form
+- react-toastify
+- jodit-react
+- sweetalert2
+
+Backend:
+- express
+- mongoose
+- cors
+- dotenv
+- jsonwebtoken
+- bcryptjs
+- stripe
